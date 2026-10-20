@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pulse Marketing Automation</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--red:#DC2626;--red2:#b91c1c;--bg:#FDF8F8;--card:#fff;--ink:#1f1416;--mut:#6b5d60;--line:#f0dede;--tint:#fdecec;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#170f10;--card:#221718;--ink:#f6ecec;--mut:#b7a5a8;--line:#3a2a2c;--tint:#3a1a1c}}
+:root[data-theme="dark"]{--bg:#170f10;--card:#221718;--ink:#f6ecec;--mut:#b7a5a8;--line:#3a2a2c;--tint:#3a1a1c}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font:15px/1.5 Manrope,system-ui,Segoe UI,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit;color:inherit}
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+aside{background:var(--card);border-right:1px solid var(--line);padding:16px 10px;position:sticky;top:0;height:100vh;overflow:auto}
+.logo{font-weight:800;font-size:19px;color:var(--red);padding:4px 10px 16px}
+nav button{display:flex;gap:10px;align-items:center;width:100%;border:0;background:none;padding:10px 12px;border-radius:8px;cursor:pointer;color:var(--mut);font-weight:600;text-align:left}
+nav button:hover{background:var(--tint)}nav button.on{background:var(--red);color:#fff}
+nav i{font-style:normal;width:20px;text-align:center}
+.main{min-width:0}
+.top{display:flex;align-items:center;gap:10px;padding:12px 22px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.top h1{font-size:19px;margin:0;flex:1}
+.menu{display:none}
+.ic{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 10px;cursor:pointer}
+.av{width:34px;height:34px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-weight:800;cursor:pointer}
+#view{padding:22px;max-width:1200px}
+.grid{display:grid;gap:16px}.g4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}.g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;min-width:0}
+.card h3{margin:0 0 10px;font-size:16px}
+.stat b{display:block;font-size:28px;font-weight:800}.stat span{color:var(--mut)}
+.up{color:#15803d;font-weight:600}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.btn{background:var(--red);color:#fff;border:0;border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:600}
+.btn:hover{background:var(--red2)}.btn.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.btn.sm{padding:4px 9px;font-size:13px}
+input,select,textarea{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:8px 10px;width:100%}
+.bar input,.bar select{width:auto}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap}th{color:var(--mut);font-weight:600;font-size:13px}
+.pill{padding:2px 10px;border-radius:99px;font-size:12px;font-weight:600;background:var(--tint);color:var(--red)}
+.pill.Completed{background:#dcfce7;color:#166534}.pill.Draft{background:#e5e7eb;color:#374151}.pill.Scheduled{background:#fef3c7;color:#92400e}.pill.Cancelled{background:#fee2e2;color:#991b1b}.pill.Progress{background:#dbeafe;color:#1e40af}
+.meter{height:10px;background:var(--tint);border-radius:9px;overflow:hidden;margin:4px 0 12px}.meter i{display:block;height:100%;background:var(--red)}
+.modal{position:fixed;inset:0;background:#0007;display:grid;place-items:center;z-index:20;padding:14px}
+.modal>div{background:var(--card);border-radius:12px;padding:20px;width:min(640px,100%);max-height:90vh;overflow:auto}
+label{display:block;font-weight:600;font-size:13px;margin:10px 0 4px}
+.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1;min-width:140px}
+iframe{width:100%;height:240px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.step{display:flex;gap:8px;align-items:center;padding:8px 10px;border-left:3px solid var(--red);background:var(--tint);border-radius:0 8px 8px 0;margin:6px 0}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:8px;z-index:50;display:none}
+#auth{position:fixed;inset:0;background:var(--bg);z-index:40;display:grid;place-items:center;padding:16px}
+#auth .card{width:min(380px,100%)}
+@media(max-width:800px){.app{grid-template-columns:1fr}aside{position:fixed;left:-240px;width:230px;z-index:30;transition:.2s}aside.open{left:0}.menu{display:block}#view{padding:14px}}
+@media print{aside,.top,.bar{display:none}.app{display:block}}
+</style></head><body>
+<div id="auth"><div class="card"><div class="logo" style="padding-left:0">Pulse</div>
+<h3 id="at">Sign in</h3><label>Email</label><input id="ae" value="demo@pulse.com"><label>Password</label><input id="ap" type="password" value="demo123">
+<div id="an" style="display:none"><label>Full name</label><input id="aname" placeholder="Your name"></div>
+<p style="color:#DC2626;margin:6px 0" id="aerr"></p>
+<button class="btn" id="go" type="button" style="width:100%">Continue</button>
+<p style="text-align:center;color:var(--mut)"><a href="#" onclick="swap();return false" id="as" style="color:var(--red)">Create an account</a></p></div></div>
+<div class="app"><aside id="side"><div class="logo">Pulse</div><nav id="nav"></nav></aside>
+<div class="main"><div class="top"><button class="ic menu" onclick="side.classList.toggle('open')">☰</button><h1 id="title"></h1>
+<button class="ic" onclick="theme()" title="Dark mode">◐</button><div class="av" id="avt" onclick="go('profile')"></div></div>
+<div id="view"></div></div></div><div id="toast"></div>
+<script>
+const $=s=>document.querySelector(s),pct=(a,b)=>b?(a/b*100).toFixed(1):'0.0',money=n=>'$'+Math.round(n).toLocaleString();
+const ST=['Draft','Scheduled','In Progress','Completed','Cancelled'],ICON={Draft:'📝',Scheduled:'📤','In Progress':'🔄',Completed:'✅',Cancelled:'❌'};
+const D={user:{name:'Demo Marketer',email:'demo@pulse.com',role:'Marketing Lead'},
+tpls:[{id:1,name:'Welcome Email',subject:'Welcome aboard!',html:'<div style="font-family:sans-serif;padding:24px;text-align:center"><h1 style="color:#DC2626">Welcome!</h1><p>Thanks for joining us. Here is 10% off your first order.</p><a style="background:#DC2626;color:#fff;padding:10px 18px;border-radius:6px;text-decoration:none">Shop now</a></div>'},
+{id:2,name:'Monthly Newsletter',subject:'This month at Pulse',html:'<div style="font-family:sans-serif;padding:24px"><h2>October news</h2><p>New features, tips and stories from our team.</p><hr><small>Unsubscribe anytime</small></div>'},
+{id:3,name:'Cart Reminder',subject:'You left something behind',html:'<div style="font-family:sans-serif;padding:24px;text-align:center"><h2>Still thinking it over?</h2><p>Your cart is saved for 24 hours.</p><a style="background:#DC2626;color:#fff;padding:10px 18px;border-radius:6px;text-decoration:none">Return to cart</a></div>'}],
+subs:[],camps:[
+{id:1,name:'Diwali Mega Sale',type:'Promotional',status:'Completed',tpl:2,seg:'All',sent:4200,open:1890,click:630,bounce:84,conv:210,cost:900,rev:12600,date:'2026-10-02'},
+{id:2,name:'Welcome Series Launch',type:'Automated',status:'In Progress',tpl:1,seg:'New',sent:1800,open:1080,click:410,bounce:30,conv:150,cost:300,rev:4500,date:'2026-10-10'},
+{id:3,name:'Cart Recovery Blast',type:'Transactional',status:'Completed',tpl:3,seg:'Customers',sent:2600,open:1170,click:520,bounce:52,conv:260,cost:400,rev:9100,date:'2026-09-24'},
+{id:4,name:'Winter Preview',type:'Newsletter',status:'Scheduled',tpl:2,seg:'VIP',sent:0,open:0,click:0,bounce:0,conv:0,cost:200,rev:0,date:'2026-11-05'},
+{id:5,name:'Feedback Survey',type:'Newsletter',status:'Draft',tpl:2,seg:'Customers',sent:0,open:0,click:0,bounce:0,conv:0,cost:0,rev:0,date:'2026-11-12'},
+{id:6,name:'Old Webinar Invite',type:'Promotional',status:'Cancelled',tpl:1,seg:'All',sent:0,open:0,click:0,bounce:0,conv:0,cost:0,rev:0,date:'2026-09-15'}],
+flows:[{id:1,name:'Welcome Sequence',trigger:'New subscriber',on:true,steps:['Send: Welcome Email','Wait 2 days','Send: Monthly Newsletter']},
+{id:2,name:'Abandoned Cart',trigger:'Cart abandoned',on:true,steps:['Wait 1 hour','Send: Cart Reminder','Wait 1 day','Send: Cart Reminder']},
+{id:3,name:'Lead Nurture',trigger:'Form submitted',on:false,steps:['Send: Welcome Email','Wait 3 days','Send: Monthly Newsletter']}],
+pages:[{id:1,name:'Winter Sale Signup',head:'Get early winter deals',sub:'Join 10,000 smart shoppers.',cta:'Join now',color:'#DC2626',views:1240,leads:186}],
+growth:[820,910,1005,1100,1260,1410,1580,1790]};
+['Asha Rao','Vikram Singh','Neha Gupta','Rahul Jain','Priya Nair','Karan Mehta','Sana Khan','Arjun Das','Meera Iyer','Dev Patel','Isha Verma','Rohit Sharma'].forEach((n,i)=>D.subs.push({id:i+1,name:n,email:n.toLowerCase().replace(' ','.')+'@mail.com',seg:['All','New','Customers','VIP'][1+i%3],active:i%7!=6}));
+let V='dashboard',fq='',fs='',sq='',sseg='',aid=1,wid=null;let nid=100;
+const PAGES=[['dashboard','📊','Dashboard'],['campaigns','📣','Campaigns'],['templates','✉️','Email Templates'],['subscribers','👥','Subscribers'],['analytics','📈','Analytics'],['workflows','🔁','Automation'],['landing','🌐','Landing Pages'],['reports','🧾','Reports'],['profile','👤','Profile']];
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(t.k);t.k=setTimeout(()=>t.style.display='none',2200)}
+function theme(){const r=document.documentElement;r.dataset.theme=(r.dataset.theme||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'))=='dark'?'light':'dark'}
+let reg=false;function swap(){reg=!reg;$('#an').style.display=reg?'block':'none';$('#at').textContent=reg?'Create account':'Sign in';$('#as').textContent=reg?'Have an account? Sign in':'Create an account'}
+function doAuth(){const e=$('#ae').value.trim(),p=$('#ap').value;if(!/^\S+@\S+\.\S+$/.test(e))return $('#aerr').textContent='Enter a valid email.';if(p.length<4)return $('#aerr').textContent='Password needs 4+ characters.';
+if(reg){D.user.name=$('#aname').value||'New User';D.user.email=e}$('#auth').style.display='none';$('#avt').textContent=D.user.name[0];toast('Welcome, '+D.user.name.split(' ')[0])}
+function go(v){V=v;side.classList.remove('open');render()}
+function modal(t,body,save,label='Save'){const m=document.createElement('div');m.className='modal';m.innerHTML=`<div><h3>${t}</h3>${body}<div class="row" style="margin-top:16px;justify-content:flex-end"><button class="btn alt" id="mc" style="flex:0">Close</button>${save?`<button class="btn" id="ms" style="flex:0">${label}</button>`:''}</div></div>`;document.body.appendChild(m);
+$('#mc').onclick=()=>m.remove();if(save)$('#ms').onclick=()=>{if(save(m)!==false)m.remove()};m.onclick=e=>{if(e.target==m)m.remove()};return m}
+const tot=k=>D.camps.reduce((a,c)=>a+c[k],0);
+function lineSvg(a){const w=420,h=150,mx=Math.max(...a),p=a.map((v,i)=>[i*(w/(a.length-1)),h-8-(v/mx)*(h-24)]);return `<svg viewBox="0 0 ${w} ${h}" width="100%"><path d="M0,${h} L${p.map(q=>q.join(',')).join(' L')} L${w},${h}Z" fill="#DC262622"/><polyline fill="none" stroke="#DC2626" stroke-width="3" points="${p.map(q=>q.join(',')).join(' ')}"/>${p.map(q=>`<circle cx="${q[0]}" cy="${q[1]}" r="3.5" fill="#DC2626"/>`).join('')}</svg>`}
+function barSvg(items){const h=150,mx=Math.max(...items.map(i=>i[1]),1),bw=420/items.length;return `<svg viewBox="0 0 420 ${h+22}" width="100%">${items.map((i,k)=>{const bh=i[1]/mx*(h-16);return `<rect x="${k*bw+bw*.2}" y="${h-bh}" width="${bw*.6}" height="${bh}" rx="4" fill="#DC2626"/><text x="${k*bw+bw/2}" y="${h+14}" font-size="10" text-anchor="middle" fill="currentColor">${i[0]}</text>`}).join('')}</svg>`}
+const P={
+dashboard(){const s=tot('sent'),o=tot('open'),c=tot('click'),cost=tot('cost'),rev=tot('rev');
+return `<div class="grid g4"><div class="card stat"><span>Campaigns</span><b>${D.camps.length}</b><span class="up">${D.camps.filter(x=>x.status=='In Progress').length} in progress</span></div>
+<div class="card stat"><span>Subscribers</span><b>${D.growth.at(-1).toLocaleString()}</b><span class="up">+${pct(D.growth.at(-1)-D.growth.at(-2),D.growth.at(-2))}% this month</span></div>
+<div class="card stat"><span>Avg. open rate</span><b>${pct(o,s)}%</b><span>${pct(c,s)}% click rate</span></div>
+<div class="card stat"><span>Marketing ROI</span><b>${pct(rev-cost,cost)}%</b><span>${money(rev)} revenue</span></div></div>
+<div class="grid g2" style="margin-top:16px"><div class="card"><h3>Emails sent per campaign</h3>${barSvg(D.camps.filter(x=>x.sent).map(x=>[x.name.split(' ')[0],x.sent]))}</div>
+<div class="card"><h3>Subscriber growth (last 8 months)</h3>${lineSvg(D.growth)}</div></div>
+<div class="card" style="margin-top:16px"><h3>Recent campaigns</h3><div class="tw"><table><tr><th>Name</th><th>Status</th><th>Open rate</th><th>Date</th></tr>${D.camps.slice(0,4).map(c=>`<tr><td>${c.name}</td><td>${pill(c.status)}</td><td>${pct(c.open,c.sent)}%</td><td>${c.date}</td></tr>`).join('')}</table></div></div>`},
+campaigns(){const l=D.camps.filter(c=>c.name.toLowerCase().includes(fq.toLowerCase())&&(!fs||c.status==fs));
+return `<div class="bar"><input placeholder="Search campaigns" value="${fq}" oninput="fq=this.value;render(1)"><select onchange="fs=this.value;render(1)"><option value="">All statuses</option>${ST.map(s=>`<option ${fs==s?'selected':''}>${s}</option>`).join('')}</select><span style="flex:1"></span><button class="btn" onclick="editC()">+ New campaign</button></div>
+<div class="card"><div class="tw"><table id="ct"><tr><th>Campaign</th><th>Type</th><th>Status</th><th>Audience</th><th>Send date</th><th></th></tr>${l.map(c=>`<tr><td><b>${c.name}</b></td><td>${c.type}</td><td>${pill(c.status)}</td><td>${c.seg}</td><td>${c.date}</td><td>
+${['Draft','Scheduled'].includes(c.status)?`<button class="btn sm" onclick="launch(${c.id})">Launch</button> `:''}<button class="btn alt sm" onclick="editC(${c.id})">Edit</button> ${['Draft','Scheduled','In Progress'].includes(c.status)?`<button class="btn alt sm" onclick="setS(${c.id},'Cancelled')">Cancel</button> `:''}<button class="btn alt sm" onclick="delC(${c.id})">Delete</button></td></tr>`).join('')||'<tr><td colspan=6>No campaigns match. Clear the filters or create one.</td></tr>'}</table></div></div>`},
+templates(){return `<div class="bar"><span style="flex:1"></span><button class="btn" onclick="editT()">+ New template</button></div><div class="grid g2">${D.tpls.map(t=>`<div class="card"><h3>${t.name}</h3><p style="color:var(--mut);margin:0 0 8px">Subject: ${t.subject}</p><iframe sandbox srcdoc='${t.html.replace(/'/g,'&#39;')}'></iframe><div class="row" style="margin-top:10px"><button class="btn sm" onclick="editT(${t.id})">Edit HTML</button><button class="btn alt sm" onclick="toast('Test email sent to ${D.user.email}')">Send test</button><button class="btn alt sm" onclick="D.tpls=D.tpls.filter(x=>x.id!=${t.id});render()">Delete</button></div></div>`).join('')}</div>`},
+subscribers(){const l=D.subs.filter(s=>(s.name+s.email).toLowerCase().includes(sq.toLowerCase())&&(!sseg||s.seg==sseg));
+return `<div class="bar"><input placeholder="Search subscribers" value="${sq}" oninput="sq=this.value;render(1)"><select onchange="sseg=this.value;render(1)"><option value="">All segments</option>${['New','Customers','VIP'].map(s=>`<option ${sseg==s?'selected':''}>${s}</option>`).join('')}</select><span style="flex:1"></span>
+<button class="btn alt" onclick="csvIn.click()">Import CSV</button><button class="btn alt" onclick="exp('subscribers',[['Name','Email','Segment','Active'],...D.subs.map(s=>[s.name,s.email,s.seg,s.active])])">Export CSV</button><button class="btn" onclick="addS()">+ Add</button><input type="file" id="csvIn" accept=".csv" hidden onchange="imp(this)"></div>
+<div class="card"><p style="margin:0 0 8px;color:var(--mut)">${l.length} subscribers shown. A segment groups people for targeted campaigns.</p><div class="tw"><table><tr><th>Name</th><th>Email</th><th>Segment</th><th>Status</th><th></th></tr>${l.map(s=>`<tr><td>${s.name}</td><td>${s.email}</td><td>${s.seg}</td><td>${s.active?'Subscribed':'Unsubscribed'}</td><td><button class="btn alt sm" onclick="D.subs=D.subs.filter(x=>x.id!=${s.id});render()">Remove</button></td></tr>`).join('')}</table></div></div>`},
+analytics(){const c=D.camps.find(x=>x.id==aid)||D.camps[0],m=(l,v,cl)=>`<b>${l}: ${v}%</b><div class="meter"><i style="width:${Math.min(v*(cl||1),100)}%"></i></div>`;
+return `<div class="bar"><select onchange="aid=this.value;render()">${D.camps.filter(x=>x.sent).map(x=>`<option value="${x.id}" ${x.id==c.id?'selected':''}>${x.name}</option>`).join('')}</select></div>
+<div class="grid g2"><div class="card"><h3>${c.name}</h3>${m('Open rate',pct(c.open,c.sent),1.5)}${m('Click rate',pct(c.click,c.sent),3)}${m('Bounce rate',pct(c.bounce,c.sent),10)}${m('Conversion rate',pct(c.conv,c.sent),5)}<p style="color:var(--mut)">${c.sent.toLocaleString()} sent, ${c.conv} conversions, ${money(c.rev)} revenue.</p></div>
+<div class="card"><h3>Engagement funnel</h3>${barSvg([['Sent',c.sent],['Opened',c.open],['Clicked',c.click],['Converted',c.conv]])}</div></div>
+<div class="card" style="margin-top:16px"><h3>A/B test (simulated)</h3><p style="color:var(--mut)">Compare two subject lines on a 20% sample of the list.</p><div class="row"><input id="va" value="Your winter picks are here"><input id="vb" value="Save 20% before Friday"></div><button class="btn" style="margin-top:10px" onclick="ab()">Run test</button><div id="abr" style="margin-top:12px"></div></div>`},
+workflows(){return `<div class="bar"><span style="flex:1"></span><button class="btn" onclick="editW()">+ New workflow</button></div><div class="grid g2">${D.flows.map(f=>`<div class="card"><div class="row" style="align-items:center"><h3 style="margin:0">${f.name}</h3><span style="flex:0"><span class="pill ${f.on?'Completed':'Draft'}">${f.on?'Active':'Paused'}</span></span></div><p style="color:var(--mut)">Starts when: ${f.trigger}</p>${f.steps.map(s=>`<div class="step">${s.startsWith('Wait')?'⏱':'✉️'} ${s}</div>`).join('')}<div class="row" style="margin-top:10px"><button class="btn sm" onclick="D.flows.find(x=>x.id==${f.id}).on^=1;render()">${f.on?'Pause':'Activate'}</button><button class="btn alt sm" onclick="D.flows=D.flows.filter(x=>x.id!=${f.id});render()">Delete</button></div></div>`).join('')}</div>`},
+landing(){return `<div class="bar"><span style="flex:1"></span><button class="btn" onclick="editP()">+ New landing page</button></div><div class="grid g2">${D.pages.map(p=>`<div class="card"><h3>${p.name}</h3><iframe sandbox="allow-scripts" srcdoc='${lp(p).replace(/'/g,'&#39;')}'></iframe><p style="color:var(--mut)">${p.views} views, ${p.leads} leads (${pct(p.leads,p.views)}% conversion)</p><button class="btn alt sm" onclick="editP(${p.id})">Edit</button> <button class="btn alt sm" onclick="D.pages=D.pages.filter(x=>x.id!=${p.id});render()">Delete</button></div>`).join('')}</div>`},
+reports(){const rows=D.camps.filter(c=>c.sent);return `<div class="bar"><span style="flex:1"></span><button class="btn alt" onclick="exp('campaign-report',[['Campaign','Sent','Open %','Click %','Cost','Revenue','ROI %'],...rows.map(c=>[c.name,c.sent,pct(c.open,c.sent),pct(c.click,c.sent),c.cost,c.rev,pct(c.rev-c.cost,c.cost)])])">Export CSV</button><button class="btn" onclick="pdf()">Save as PDF</button></div>
+<div class="card"><h3>Campaign performance and ROI</h3><div class="tw"><table><tr><th>Campaign</th><th>Sent</th><th>Open %</th><th>Click %</th><th>Cost</th><th>Revenue</th><th>ROI</th></tr>${rows.map(c=>`<tr><td>${c.name}</td><td>${c.sent}</td><td>${pct(c.open,c.sent)}</td><td>${pct(c.click,c.sent)}</td><td>${money(c.cost)}</td><td>${money(c.rev)}</td><td class="up">${pct(c.rev-c.cost,c.cost)}%</td></tr>`).join('')}</table></div></div>
+<div class="card" style="margin-top:16px"><h3>Revenue by campaign</h3>${barSvg(rows.map(c=>[c.name.split(' ')[0],c.rev]))}</div>`},
+profile(){const u=D.user;return `<div class="card" style="max-width:480px"><h3>Your profile</h3><label>Name</label><input id="pn" value="${u.name}"><label>Email</label><input id="pe" value="${u.email}"><label>Role</label><input id="pr" value="${u.role}"><div class="row" style="margin-top:14px"><button class="btn" onclick="saveP()">Save changes</button><button class="btn alt" onclick="$('#auth').style.display='grid'">Sign out</button></div></div>`}};
+const pill=s=>`<span class="pill ${s.split(' ').pop()}">${ICON[s]} ${s}</span>`;
+function lp(p){return `<body style="margin:0;font-family:sans-serif;text-align:center;padding:30px;background:#fff"><h1 style="color:${p.color}">${p.head}</h1><p>${p.sub}</p><div id="f"><input id="e" placeholder="you@email.com" style="padding:9px;border:1px solid #ccc;border-radius:6px"> <button onclick="var v=document.getElementById('e').value;if(v.indexOf('@')<1||v.indexOf('.')<0){document.getElementById('m').textContent='Enter a valid email address.';return}document.getElementById('f').innerHTML='<h2>Thanks! You are on the list.</h2>';parent.postMessage({lead:${p.id||0}},'*')" style="background:${p.color};color:#fff;border:0;padding:10px 16px;border-radius:6px;cursor:pointer">${p.cta}</button><p id="m" style="color:#DC2626"></p></div></body>`}
+function render(keep){const f=document.activeElement&&document.activeElement.tagName=='INPUT'&&keep?[document.activeElement.placeholder,document.activeElement.selectionStart]:null;
+$('#nav').innerHTML=PAGES.map(p=>`<button class="${p[0]==V?'on':''}" onclick="go('${p[0]}')"><i>${p[1]}</i>${p[2]}</button>`).join('');
+$('#title').textContent=PAGES.find(p=>p[0]==V)[2];$('#view').innerHTML=P[V]();
+if(f){const e=[...document.querySelectorAll('input')].find(i=>i.placeholder==f[0]);if(e){e.focus();e.setSelectionRange(f[1],f[1])}}}
+function editC(id){const c=D.camps.find(x=>x.id==id)||{name:'',type:'Promotional',status:'Draft',tpl:1,seg:'All',date:'2026-11-20',cost:0};
+const m=modal(id?'Edit campaign':'New campaign',`<label>Name</label><input id="cn" value="${c.name}"><div class="row"><div><label>Type</label><select id="cty">${['Promotional','Newsletter','Transactional','Automated'].map(t=>`<option ${t==c.type?'selected':''}>${t}</option>`).join('')}</select></div><div><label>Status</label><select id="cs">${ST.map(t=>`<option ${t==c.status?'selected':''}>${t}</option>`).join('')}</select></div></div>
+<div class="row"><div><label>Template</label><select id="ctp">${D.tpls.map(t=>`<option value="${t.id}" ${t.id==c.tpl?'selected':''}>${t.name}</option>`).join('')}</select></div><div><label>Audience</label><select id="cg">${['All','New','Customers','VIP'].map(t=>`<option ${t==c.seg?'selected':''}>${t}</option>`).join('')}</select></div></div>
+<label>Send date</label><input id="cd" type="date" value="${c.date}"><label>Budget ($)</label><input id="cc" type="number" value="${c.cost}"><iframe id="cp" sandbox style="margin-top:12px;height:160px"></iframe>`,()=>{const n=$('#cn').value.trim();if(!n){toast('Give the campaign a name');return false}
+const o={name:n,type:$('#cty').value,status:$('#cs').value,tpl:+$('#ctp').value,seg:$('#cg').value,date:$('#cd').value,cost:+$('#cc').value};
+if(id)Object.assign(c,o);else D.camps.unshift({id:nid++,sent:0,open:0,click:0,bounce:0,conv:0,rev:0,...o});render();toast('Campaign saved')});
+const pv=()=>$('#cp').srcdoc=D.tpls.find(t=>t.id==$('#ctp').value).html;$('#ctp').onchange=pv;pv()}
+function launch(id){const c=D.camps.find(x=>x.id==id),n=D.subs.filter(s=>s.active).length*100;c.status='In Progress';c.sent=n;render();toast('Launched to '+n+' recipients');
+setTimeout(()=>{if(c.status=='In Progress'){c.open=Math.round(n*.43);c.click=Math.round(n*.14);c.bounce=Math.round(n*.02);c.conv=Math.round(n*.05);c.rev=c.conv*40;c.status='Completed';render();toast(c.name+' completed')}},4000)}
+function setS(id,s){D.camps.find(x=>x.id==id).status=s;render()}
+function delC(id){const c=D.camps.find(x=>x.id==id);modal('Delete campaign','<p>Delete <b>'+c.name+'</b>? This cannot be undone.</p>',()=>{D.camps=D.camps.filter(x=>x.id!=id);render();toast('Campaign deleted')},'Delete')}
+function editT(id){const t=D.tpls.find(x=>x.id==id)||{name:'',subject:'',html:'<h1>Hello</h1><p>Write your message here.</p>'};
+modal(id?'Edit template':'New template',`<label>Name</label><input id="tn" value="${t.name}"><label>Subject line</label><input id="ts" value="${t.subject}"><label>HTML</label><textarea id="th" rows="7">${t.html.replace(/</g,'&lt;')}</textarea><label>Live preview</label><iframe id="tp" sandbox srcdoc=""></iframe>`,()=>{const n=$('#tn').value.trim();if(!n){toast('Name the template');return false}
+const o={name:n,subject:$('#ts').value,html:$('#th').value};if(id)Object.assign(t,o);else D.tpls.push({id:nid++,...o});render()});
+const u=()=>$('#tp').srcdoc=$('#th').value;$('#th').oninput=u;u()}
+function addS(){modal('Add subscriber',`<label>Name</label><input id="sn"><label>Email</label><input id="se" type="email"><label>Segment</label><select id="sg"><option>New</option><option>Customers</option><option>VIP</option></select>`,()=>{const e=$('#se').value.trim();if(!/^\S+@\S+\.\S+$/.test(e)){toast('Enter a valid email');return false}D.subs.unshift({id:nid++,name:$('#sn').value||e,email:e,seg:$('#sg').value,active:true});render()})}
+function imp(i){const f=i.files[0];if(!f)return;f.text().then(t=>{let n=0;t.split(/\r?\n/).slice(1).forEach(r=>{const [a,b,c]=r.split(',');if(b&&/\S+@\S+/.test(b)){D.subs.push({id:nid++,name:a,email:b.trim(),seg:c?.trim()||'New',active:true});n++}});render();toast(n+' subscribers imported (columns: name,email,segment)')})}
+async function save(name,data){try{const d=window.claude&&await claude.use('downloads');if(!d)return toast('File downloads are not available in this view');await d.save({filename:name,data});toast('Saved '+name)}catch(e){if(!e||e.code!='declined')toast('Could not save the file')}}
+function exp(n,rows){save(n+'.csv',rows.map(r=>r.map(v=>`"${v}"`).join(',')).join('\n'))}
+function pdf(){const rows=D.camps.filter(c=>c.sent).slice(0,40),e=s=>String(s).replace(/[^\x20-\x7E]/g,'?').replace(/[\\()]/g,'\\$&');
+const L=['Campaign performance and ROI report','',...rows.map(c=>`${c.name} | sent ${c.sent} | open ${pct(c.open,c.sent)}% | click ${pct(c.click,c.sent)}% | cost ${money(c.cost)} | revenue ${money(c.rev)} | ROI ${pct(c.rev-c.cost,c.cost)}%`)];
+const t='BT /F1 9 Tf 40 800 Td 16 TL '+L.map(l=>`(${e(l)}) Tj T*`).join(' ')+' ET';
+const o=['<</Type/Catalog/Pages 2 0 R>>','<</Type/Pages/Kids[3 0 R]/Count 1>>','<</Type/Page/Parent 2 0 R/MediaBox[0 0 595 842]/Contents 5 0 R/Resources<</Font<</F1 4 0 R>>>>>>','<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>',`<</Length ${t.length}>>\nstream\n${t}\nendstream`];
+let p='%PDF-1.4\n';const x=[];o.forEach((b,i)=>{x.push(p.length);p+=`${i+1} 0 obj\n${b}\nendobj\n`});
+const s=p.length;p+='xref\n0 6\n0000000000 65535 f \n'+x.map(n=>String(n).padStart(10,'0')+' 00000 n \n').join('')+`trailer\n<</Size 6/Root 1 0 R>>\nstartxref\n${s}\n%%EOF`;save('campaign-report.pdf',p)}
+window.addEventListener('message',e=>{const id=e.data&&e.data.lead,p=id&&D.pages.find(x=>x.id==id);if(p){p.leads++;p.views=Math.max(p.views,p.leads)}});
+function ab(){const a=Math.round(18+Math.random()*14),b=Math.round(18+Math.random()*14),w=a>=b?'A':'B';$('#abr').innerHTML=`<b>Variant A:</b> ${a}% opens<div class="meter"><i style="width:${a*2.5}%"></i></div><b>Variant B:</b> ${b}% opens<div class="meter"><i style="width:${b*2.5}%"></i></div><span class="pill Completed">Variant ${w} wins</span>`}
+function editW(){const st=[];const m=modal('New workflow',`<label>Name</label><input id="wn"><label>Trigger</label><select id="wt"><option>New subscriber</option><option>Cart abandoned</option><option>Form submitted</option></select><label>Add a step</label><div class="row"><select id="wa"><option>Wait 1 day</option><option>Wait 3 days</option>${D.tpls.map(t=>`<option>Send: ${t.name}</option>`).join('')}</select><button class="btn alt" style="flex:0" id="wb">Add</button></div><div id="wl"></div>`,()=>{if(!$('#wn').value||!st.length){toast('Add a name and at least one step');return false}D.flows.push({id:nid++,name:$('#wn').value,trigger:$('#wt').value,on:true,steps:st});render()});
+$('#wb').onclick=()=>{st.push($('#wa').value);$('#wl').innerHTML=st.map(s=>`<div class="step">${s}</div>`).join('')}}
+function editP(id){const p=D.pages.find(x=>x.id==id)||{name:'New page',head:'Your headline',sub:'One line on why people should sign up.',cta:'Sign up',color:'#DC2626',views:0,leads:0};
+modal(id?'Edit landing page':'New landing page',`<div class="row"><div><label>Page name</label><input id="pg" value="${p.name}"><label>Headline</label><input id="ph" value="${p.head}"><label>Subtext</label><input id="psb" value="${p.sub}"><label>Button text</label><input id="pc" value="${p.cta}"><label>Accent color</label><input id="pk" type="color" value="${p.color}"></div><div><label>Preview</label><iframe id="pv" sandbox="allow-scripts" style="height:290px"></iframe></div></div>`,()=>{const o={name:$('#pg').value,head:$('#ph').value,sub:$('#psb').value,cta:$('#pc').value,color:$('#pk').value};if(id)Object.assign(p,o);else D.pages.push({id:nid++,views:0,leads:0,...o});render()});
+const u=()=>$('#pv').srcdoc=lp({head:$('#ph').value,sub:$('#psb').value,cta:$('#pc').value,color:$('#pk').value});document.querySelectorAll('.modal input').forEach(i=>i.oninput=u);u()}
+function saveP(){D.user={name:$('#pn').value,email:$('#pe').value,role:$('#pr').value};$('#avt').textContent=D.user.name[0]||'U';toast('Profile updated')}
+render();$('#go').addEventListener('click',doAuth);['ae','ap','aname'].forEach(i=>$('#'+i).addEventListener('keydown',e=>{if(e.key=='Enter')doAuth()}));
+</script></body></html>
